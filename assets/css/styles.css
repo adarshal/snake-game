@@ -1,0 +1,18 @@
+/* #main{ */
+    /* height: 100vh; */
+    /* width: 100vw; */
+    /* border: 1px solid black; */
+    /* background-color: aqua; */
+/* } */
+
+/* #game{
+    height: 95vh;
+    width: 95vw;
+    margin: auto;
+    border: 1px solid black;
+    justify-content: center;
+} */
+#canvas{
+    margin: auto; 
+    justify-content: center;
+}
