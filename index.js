@@ -1,4 +1,4 @@
-
+// /32.49
 // require('dotenv').config();
 
 const express=require('express');
@@ -7,7 +7,7 @@ const port=process.env.PORT || 8000;
 
 app.use(express.static('assets'));
 
-const {createGameState,gameLoop}=require('./config/game')
+const {createGameState,gameLoop,getUpadatedVel}=require('./config/game')
 const {FRAME_RATE}=require('./config/costants')
 
 
@@ -16,14 +16,37 @@ const {FRAME_RATE}=require('./config/costants')
 const io=require('socket.io')();
 io.on('connection', socket => {
     const state=createGameState();
+
+    socket.on('keydown', handleKeydown);
+    socket.on('newGame', handleNewGame);
+    socket.on('joinGame', handleJoinGame);
+
+    function handleNewGame(){
+        let roomName=makeId(5);
+    }
+    function handleKeydown(keyCode){
+       // console.log(keyCode,'key pressed')
+        try {
+            keyCode=parseInt(keyCode);
+        } catch (err) {
+            console.log(err);
+            return;
+        }
+        const vel=getUpadatedVel(keyCode);
+        if(vel){
+            state.player.vel=vel;
+        }
+    }
     startGameInterval(socket,state);
 
   });
 function startGameInterval(socket,state){
     const intervalId=setInterval(()=>{
         const winner=gameLoop(state);
+        
         if(!winner){// game is on/running
             socket.emit('gameState',JSON.stringify(state)) 
+            
         }else{
             socket.emit('gameOver');
             clearInterval(intervalId);

@@ -16,3 +16,6 @@
     margin: auto; 
     justify-content: center;
 }
+#game{
+    display: none;
+}
